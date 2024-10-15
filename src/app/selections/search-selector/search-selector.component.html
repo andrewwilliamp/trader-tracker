@@ -1,0 +1,25 @@
+
+<div mat-subheader>Stocks</div>
+<mat-form-field>
+  <input type="text" matInput placeholder="Search" [(ngModel)]="value"/>
+  @if (value) {
+    <button matButton matSuffix  mat-icon-button aria-label="Clear" (click)="value=''">
+      <mat-icon >clear</mat-icon>
+    </button>
+  }
+
+</mat-form-field>
+{{ value }}
+
+<mat-list>
+  @for (note of stocks; track note) {
+    <mat-list-item matSuffix>
+        <mat-icon matListItemIcon>circle</mat-icon>
+        <div matListItemTitle>{{note.longDesc}}</div>
+        <div matListItemLine>{{note.longDesc}}</div>
+
+    </mat-list-item>
+
+  }
+</mat-list>
+

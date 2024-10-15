@@ -1,0 +1,11 @@
+input {
+  display: inline-block;
+}
+
+button {
+  display: inline-block;
+}
+
+mat-icon {
+  transform: scale(.75);
+}
