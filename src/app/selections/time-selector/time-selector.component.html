@@ -2,13 +2,10 @@
 
   <mat-form-field class="form-field">
     <mat-label>Time Frame</mat-label>
-    <mat-select [(ngModel)]="selectedTimeFrame" name="option">
+    <mat-select name="option">
       @for (option of timeFrames; track option) {
         <mat-option [value]="option.value">{{ option.viewValue }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
-  <p>You selected: {{selectedTimeFrame}}</p>
-
-
 </div>
