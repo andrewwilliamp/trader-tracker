@@ -27,6 +27,8 @@
               }
             ],
             "styles": [
+              "./node_modules/jqwidgets-ng/jqwidgets/styles/jqx.dark.css",
+              "./node_modules/jqwidgets-ng/jqwidgets/styles/jqx.base.css",
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
@@ -86,6 +88,8 @@
               }
             ],
             "styles": [
+              "./node_modules/jqwidgets-ng/jqwidgets/styles/jqx.dark.css",
+              "./node_modules/jqwidgets-ng/jqwidgets/styles/jqx.base.css",
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],

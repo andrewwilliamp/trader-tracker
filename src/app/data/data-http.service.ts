@@ -1,27 +1,33 @@
 import { inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SummaryStockDataDto } from './summary-stock-data.dto';
 import { environment } from '../../../environment';
 
 export class DataService {
 
-  private ticker: string = 'AMRN';
-  private timeIntervalNumber: string | number = 1;
-  private timeIntervalUnit: string = 'mo';
-  private rangeNumber: string | number = 5;
-  private rangeInterval: string = 'y';
+  private http: HttpClient = inject(HttpClient);
 
-  private http: HttpClient;
+  private ticker: string;
+  private timeInterval: string;
+  private rangeNumber: string | number;
+  private rangeUnit: string;
+
+  private api = new BehaviorSubject<any>(null);
+  readonly api$: Observable<SummaryStockDataDto> = this.api.asObservable();
+
+  updateData(data: SummaryStockDataDto) {
+    this.api.next(data);
+  }
+
 
   constructor() {
+    // set default values
     this.ticker = 'AMRN';
-    this.timeIntervalNumber = 1;
-    this.timeIntervalUnit = 'mo';
-    this.rangeNumber= 5;
-    this.rangeInterval = 'y';
+    this.timeInterval = '1mo';
+    this.rangeNumber= 2;
+    this.rangeUnit = 'y';
 
-    this.http = inject(HttpClient);
   }
 
 
@@ -31,18 +37,18 @@ export class DataService {
 
   setRange(rangeNumber: string | number, rangeInterval: string) {
     this.rangeNumber = rangeNumber;
-    this.rangeInterval = rangeInterval;
+    this.rangeUnit = rangeInterval;
   }
 
-  setTimeInterval(
-    timeIntervalNumber: string | number,
-    timeIntervalUnit: string
-  ) {
-    this.timeIntervalNumber = timeIntervalNumber;
-    this.timeIntervalUnit = timeIntervalUnit;
-  }
+  // setTimeInterval(
+  //   timeIntervalNumber: string | number,
+  //   timeIntervalUnit: string
+  // ) {
+  //   this.timeIntervalNumber = timeIntervalNumber;
+  //   this.timeIntervalUnit = timeIntervalUnit;
+  // }
 
-  getData(): Observable<SummaryStockDataDto> {
+  getData(timeInterval?: string): Observable<SummaryStockDataDto> {
     const headers = new HttpHeaders({
       'x-rapidapi-key': environment.apiKey,
       'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
@@ -53,16 +59,19 @@ export class DataService {
       headers: headers,
     };
 
+    if (timeInterval) {
+      this.timeInterval = timeInterval;
+    }
+
     return this.http
       .get<SummaryStockDataDto>(
         'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=' +
-          this.timeIntervalNumber +
-          this.timeIntervalUnit +
+          this.timeInterval +
           '&region=US&symbol=' +
           this.ticker +
           '&range=' +
           this.rangeNumber +
-          this.rangeInterval +
+          this.rangeUnit +
           '&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit',
         httpOptions
       )

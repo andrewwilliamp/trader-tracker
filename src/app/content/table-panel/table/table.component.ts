@@ -5,12 +5,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { SummaryStockDataDto } from '../../../data/summary-stock-data.dto';
 import { SelectionDataService } from '../../../data/selection-data.service';
 
-export interface Row {
-  [key: string]: any;
-}
-
-
-
 @Component({
   selector: 'app-table',
   standalone: true,
@@ -23,34 +17,43 @@ export class TableComponent implements OnInit, OnDestroy{
   private dataService = inject(DataService);
   private selectionDataService = inject(SelectionDataService);
   private destroy$ = new Subject<void>();
-  private tickerDescription: any;
 
   dataAdapter: any;
   dataSets = new Array();
 
   ngOnInit(): void {
-    this.dataService.getData()
+    this.selectionDataService.timeInterval$.subscribe(timeInterval => {
+      // console.log('time: ', timeInterval);
+      this.dataService.getData(timeInterval)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data: SummaryStockDataDto) => {
+      .subscribe({
         // console.log(data);
+        next: (data: SummaryStockDataDto) => {
+          for (let i = 0; i < data.chart.result[0].timestamp.length; i++) {
+            let row: any = {};
+            row['Date'] = new Date(data.chart.result[0].timestamp[i] * 1000).toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric' });
+            row['OpenPrice'] = data.chart.result[0].indicators.quote[0].open[i];
+            row['ClosePrice'] = data.chart.result[0].indicators.quote[0].close[i];
+            row['LowPrice'] = data.chart.result[0].indicators.quote[0].low[i];
+            row['HighPrice'] = data.chart.result[0].indicators.quote[0].high[i];
+            row['Volume'] = data.chart.result[0].indicators.quote[0].volume[i];
 
-        for (let i = 0; i < data.chart.result[0].timestamp.length; i++) {
-          let row: Row = {};
-          row['Date'] = new Date(data.chart.result[0].timestamp[i] * 1000).toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric' });
-          row['OpenPrice'] = data.chart.result[0].indicators.quote[0].open[i];
-          row['ClosePrice'] = data.chart.result[0].indicators.quote[0].close[i];
-          row['LowPrice'] = data.chart.result[0].indicators.quote[0].low[i];
-          row['HighPrice'] = data.chart.result[0].indicators.quote[0].high[i];
-          row['Volume'] = data.chart.result[0].indicators.quote[0].volume[i];
-
-          this.dataSets[i] = row;
+            this.dataSets[i] = row;
+          }
+          // console.log(this.dataSets);
+          this.dataAdapter = new jqx.dataAdapter(this.source);
+          const panelHeader = data.chart.result[0].meta.symbol + ', ' + data.chart.result[0].meta.longName
+          this.selectionDataService.setPanelHeader(panelHeader);
+          this.dataService.updateData(data);
+        },
+        error: (err: any) => {
+          console.log(err);
         }
-        // console.log(this.dataSets);
-        this.dataAdapter = new jqx.dataAdapter(this.source);
-        const panelHeader = data.chart.result[0].meta.symbol + ', ' + data.chart.result[0].meta.longName
-        this.selectionDataService.setPanelHeader(panelHeader);
+
       });
+    })
   }
+
 
   ngOnDestroy() {
     this.destroy$.next();

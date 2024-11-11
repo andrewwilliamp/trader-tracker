@@ -1,15 +1,18 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
-import {MatSelectModule} from '@angular/material/select';
+import {MatSelectChange, MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { SelectionDataService } from '../../data/selection-data.service';
+import { DataService } from '../../data/data-http.service';
+import { subscribe } from 'diagnostics_channel';
+import { TimeoutError } from 'rxjs';
 
-
-interface TimeFrameModel {
+interface TimeModel {
   value: string;
   viewValue: string;
 }
+
 
 @Component({
   selector: 'app-time-selector',
@@ -21,20 +24,42 @@ interface TimeFrameModel {
 })
 export class TimeSelectorComponent {
 
-  private selectionDataService: SelectionDataService = inject(SelectionDataService);
-  timeFrames: TimeFrameModel[];
+  private selectionDataService = inject(SelectionDataService);
+  timeIntervals: TimeModel[];
+  timeRanges: TimeModel[];
 
   constructor() {
 
-    this.timeFrames = [
-      {value: 'year-0', viewValue: 'Year'},
-      {value: 'qtr-1', viewValue: 'Quarter'},
-      {value: 'month-2', viewValue: 'Month'},
-      {value: 'week-3', viewValue: 'Week'},
-      {value: 'day-4', viewValue: 'Day'},
+    this.timeIntervals = [
+      {value: '1m', viewValue: '1 Month'},
+      {value: '1wk', viewValue: '1 Week'},
+      {value: '1d', viewValue: '1 Day'},
+    ];
+
+    this.timeRanges = [
+      {value: '5y', viewValue: '5 Years'},
+      {value: '2y', viewValue: '2 Years'},
+      {value: '1y', viewValue: '1 Years'},
+      {value: 'ytd', viewValue: 'Year To Date'},
+      {value: '6mo', viewValue: '6 Months'},
+      {value: '3mo', viewValue: '3 Months'},
+      {value: '1mo', viewValue: '1 Month'},
+      {value: '5d', viewValue: '5 Days'},
     ];
 
   }
+
+  updateTimeSelections(timeSelectionEvent: MatSelectChange) {
+    // console.log(event);
+    const originElement = timeSelectionEvent.source.ariaLabel;
+    // console.log(originElement);
+    // if(originElement === 'timeInterval') {
+
+    // }
+
+    this.selectionDataService.setTimeInterval(timeSelectionEvent.value);
+  }
+
 
 }
 
