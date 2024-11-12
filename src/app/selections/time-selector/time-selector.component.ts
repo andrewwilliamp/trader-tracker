@@ -46,14 +46,8 @@ export class TimeSelectorComponent {
   }
 
   updateTimeSelections(timeSelectionEvent: MatSelectChange) {
-    // console.log(event);
     const originElement = timeSelectionEvent.source.ariaLabel;
-    // console.log(originElement);
-    // if(originElement === 'timeInterval') {
-
-    // }
-
-    this.selectionDataService.setTimeInterval(originElement, timeSelectionEvent.value);
+    this.selectionDataService.setTimeSelections(originElement, timeSelectionEvent.value);
   }
 
 
