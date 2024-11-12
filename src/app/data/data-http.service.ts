@@ -13,9 +13,9 @@ export class DataService {
   private timeRange: string;
 
   private api = new BehaviorSubject<any>(null);
-  readonly api$: Observable<SummaryStockDataDto> = this.api.asObservable();
+  readonly api$ = this.api.asObservable();
 
-  updateData(data: SummaryStockDataDto) {
+  updateData(data: any) {
     this.api.next(data);
   }
 
@@ -24,7 +24,7 @@ export class DataService {
     // set default values
     this.ticker = 'AMRN';
     this.timeInterval = '1mo';
-    this.timeRange = '5y'
+    this.timeRange = '5y';
 
   }
 
@@ -65,7 +65,7 @@ export class DataService {
       this.timeRange = timeRange;
     }
 
-    return this.http
+    let http = this.http
       .get<SummaryStockDataDto>(
         'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=' +
           this.timeInterval +
@@ -76,5 +76,9 @@ export class DataService {
           '&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit',
         httpOptions
       )
+
+    this.updateData(http);
+    return http;
+
   }
 }
