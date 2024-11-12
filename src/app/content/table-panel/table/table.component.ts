@@ -22,13 +22,17 @@ export class TableComponent implements OnInit, OnDestroy{
   dataSets = new Array();
 
   ngOnInit(): void {
-    this.selectionDataService.timeInterval$.subscribe(timeInterval => {
-      // console.log('time: ', timeInterval);
-      this.dataService.getData(timeInterval)
+    this.selectionDataService.timeData$.subscribe((timeData: any[]) => {
+      console.log('time: ', timeData);
+      const timeInterval = timeData.find(value => value.origin === 'timeInterval').data;
+      const timeRange = timeData.find(value => value.origin === 'timeRange').data;
+      console.log('timeInterval ', timeInterval);
+      this.dataService.getData(timeInterval, timeRange)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        // console.log(data);
+
         next: (data: SummaryStockDataDto) => {
+          console.log(data);
           for (let i = 0; i < data.chart.result[0].timestamp.length; i++) {
             let row: any = {};
             row['Date'] = new Date(data.chart.result[0].timestamp[i] * 1000).toLocaleString('en-US', { year: 'numeric', month: 'numeric', day: 'numeric' });
@@ -45,6 +49,7 @@ export class TableComponent implements OnInit, OnDestroy{
           const panelHeader = data.chart.result[0].meta.symbol + ', ' + data.chart.result[0].meta.longName
           this.selectionDataService.setPanelHeader(panelHeader);
           this.dataService.updateData(data);
+
         },
         error: (err: any) => {
           console.log(err);
@@ -53,6 +58,7 @@ export class TableComponent implements OnInit, OnDestroy{
       });
     })
   }
+
 
 
   ngOnDestroy() {
@@ -64,7 +70,7 @@ export class TableComponent implements OnInit, OnDestroy{
     localdata: this.dataSets,
     datatype: 'array',
     datafields: [
-     { name: 'Date', type: 'string'},
+     { name: 'Date', type: 'date', format: 'MM/dd/yyyy'},
      { name: 'OpenPrice', type: 'float'},
      { name: 'ClosePrice', type: 'float'},
      { name: 'LowPrice', type: 'float'},
@@ -89,7 +95,7 @@ export class TableComponent implements OnInit, OnDestroy{
 
     columns: any[] =
     [
-        { text: 'Date', columngroup: 'stockInfo', datafield: 'Date', width: 200 },
+        { text: 'Date', columngroup: 'stockInfo', datafield: 'Date', width: 200, cellsformat: 'MM/dd/yyyy' },
         { text: 'Open', columngroup: 'stockInfo' ,datafield: 'OpenPrice', align: 'right', cellsalign: 'right', cellsformat: 'c2' },
         { text: 'Close', datafield: 'ClosePrice', align: 'right', cellsalign: 'right', cellsformat: 'c2' },
         { text: 'Low', datafield: 'LowPrice', align: 'right', cellsalign: 'right', cellsformat: 'c2' },

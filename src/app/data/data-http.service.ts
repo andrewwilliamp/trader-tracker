@@ -10,8 +10,7 @@ export class DataService {
 
   private ticker: string;
   private timeInterval: string;
-  private rangeNumber: string | number;
-  private rangeUnit: string;
+  private timeRange: string;
 
   private api = new BehaviorSubject<any>(null);
   readonly api$: Observable<SummaryStockDataDto> = this.api.asObservable();
@@ -25,8 +24,7 @@ export class DataService {
     // set default values
     this.ticker = 'AMRN';
     this.timeInterval = '1mo';
-    this.rangeNumber= 2;
-    this.rangeUnit = 'y';
+    this.timeRange = '5y'
 
   }
 
@@ -35,10 +33,10 @@ export class DataService {
     this.ticker = ticker;
   }
 
-  setRange(rangeNumber: string | number, rangeInterval: string) {
-    this.rangeNumber = rangeNumber;
-    this.rangeUnit = rangeInterval;
-  }
+  // setRange(rangeNumber: string | number, rangeInterval: string) {
+  //   this.rangeNumber = rangeNumber;
+  //   this.rangeUnit = rangeInterval;
+  // }
 
   // setTimeInterval(
   //   timeIntervalNumber: string | number,
@@ -48,7 +46,7 @@ export class DataService {
   //   this.timeIntervalUnit = timeIntervalUnit;
   // }
 
-  getData(timeInterval?: string): Observable<SummaryStockDataDto> {
+  getData(timeInterval?: string, timeRange?: string): Observable<SummaryStockDataDto> {
     const headers = new HttpHeaders({
       'x-rapidapi-key': environment.apiKey,
       'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
@@ -63,6 +61,10 @@ export class DataService {
       this.timeInterval = timeInterval;
     }
 
+    if (timeRange) {
+      this.timeRange = timeRange;
+    }
+
     return this.http
       .get<SummaryStockDataDto>(
         'https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/v3/get-chart?interval=' +
@@ -70,8 +72,7 @@ export class DataService {
           '&region=US&symbol=' +
           this.ticker +
           '&range=' +
-          this.rangeNumber +
-          this.rangeUnit +
+          this.timeRange +
           '&includePrePost=false&useYfid=true&includeAdjustedClose=true&events=capitalGain%2Cdiv%2Csplit',
         httpOptions
       )

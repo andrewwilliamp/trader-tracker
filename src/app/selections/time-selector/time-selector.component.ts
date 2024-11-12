@@ -4,15 +4,11 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSelectChange, MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { SelectionDataService } from '../../data/selection-data.service';
-import { DataService } from '../../data/data-http.service';
-import { subscribe } from 'diagnostics_channel';
-import { TimeoutError } from 'rxjs';
 
 interface TimeModel {
   value: string;
   viewValue: string;
 }
-
 
 @Component({
   selector: 'app-time-selector',
@@ -31,7 +27,7 @@ export class TimeSelectorComponent {
   constructor() {
 
     this.timeIntervals = [
-      {value: '1m', viewValue: '1 Month'},
+      // {value: '1m', viewValue: '1 Month'},
       {value: '1wk', viewValue: '1 Week'},
       {value: '1d', viewValue: '1 Day'},
     ];
@@ -57,7 +53,7 @@ export class TimeSelectorComponent {
 
     // }
 
-    this.selectionDataService.setTimeInterval(timeSelectionEvent.value);
+    this.selectionDataService.setTimeInterval(originElement, timeSelectionEvent.value);
   }
 
 
