@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatFormFieldModule, MatSuffix } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { SelectionDataService } from '../../data/selection-data.service';
 
 interface StockModel {
   shortDesc: string;
@@ -21,12 +23,20 @@ interface StockModel {
     MatInputModule,
     MatSuffix,
     MatListModule,
-    MatButtonModule
+    MatButtonModule,
+    OverlayModule,
   ],
   templateUrl: './search-selector.component.html',
   styleUrl: './search-selector.component.css',
 })
 export class SearchSelectorComponent {
+  private selectionDataService = inject(SelectionDataService);
+  overlayOpen = this.selectionDataService.overlayOpen;
+  recentSearches = this.selectionDataService.recentSearches;
+  shortRecentSearches = this.selectionDataService.recentSearches().slice(0, 5);
+
+  searchTerm = this.selectionDataService.searchTerm;
+
   value: String = '';
 
   stocks: StockModel[] = [
@@ -38,4 +48,39 @@ export class SearchSelectorComponent {
   ];
 
   selectedTimeFrame = this.stocks[0].shortDesc;
+
+  search(searchTerm: string) {
+    if (!searchTerm) return;
+    this.searchTerm.set(searchTerm);
+    this.overlayOpen.set(false);
+    // add additional functionality
+    this.addToRecentSearches(searchTerm);
+    this.updateRecentSearches();
+  }
+
+  addToRecentSearches(searchTerm: string) {
+    const upperCaseTerm = searchTerm.toUpperCase();
+    this.recentSearches.set([
+      upperCaseTerm,
+      ...this.recentSearches()
+        .filter((terms: string) => terms !== upperCaseTerm)
+        .slice(0, 5),
+    ]);
+  }
+
+  updateRecentSearches() {
+    this.shortRecentSearches = this.selectionDataService
+      .recentSearches()
+      .slice(0, 5);
+  }
+
+  deleteRecentSearch(searchTerm: string) {
+    this.recentSearches.set(
+      this.recentSearches().filter((terms: string) => terms !== searchTerm)
+    );
+  }
+
+  performSearch(searchTerm: string) {
+    this.search(searchTerm);
+  }
 }

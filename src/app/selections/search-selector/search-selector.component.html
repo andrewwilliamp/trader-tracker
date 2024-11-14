@@ -1,25 +1,48 @@
-
 <div mat-subheader>Stocks</div>
-<mat-form-field>
-  <input type="text" matInput placeholder="Search" [(ngModel)]="value"/>
-  @if (value) {
-    <button matButton matSuffix  mat-icon-button aria-label="Clear" (click)="value=''">
-      <mat-icon >clear</mat-icon>
-    </button>
-  }
 
+<mat-form-field cdkOverlayOrigin #overlayPosition="cdkOverlayOrigin">
+  <input #searchInput
+    [value]="searchTerm()"
+    type="text"
+    matInput
+    placeholder="Search"
+    [(ngModel)]="value"
+    (click)="overlayOpen.set(true)"
+    (keydown.ENTER)="search(searchInput.value)"
+  />
+  @if (value) {
+  <button
+    matButton
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="value = ''"
+  >
+    <mat-icon>clear</mat-icon>
+  </button>
+  }
 </mat-form-field>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="overlayPosition"
+  [cdkConnectedOverlayOpen]="overlayOpen()"
+  (overlayOutsideClick)="overlayOpen.set(false)"
+>
+  <mat-divider/>
+  <mat-action-list>
+    @for (search of shortRecentSearches; track search) {
+    <mat-list-item (click)="performSearch(search)">
+      <mat-icon matListItemIcon>history</mat-icon>
+      <h3>{{ search }}</h3>
+      <button matListItemMeta mat-icon-button (click)="deleteRecentSearch(search)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-list-item>
+    }
+  </mat-action-list>
+</ng-template>
+
 {{ value }}
 
-<mat-list>
-  @for (note of stocks; track note) {
-    <mat-list-item matSuffix>
-        <mat-icon matListItemIcon>circle</mat-icon>
-        <div matListItemTitle>{{note.longDesc}}</div>
-        <div matListItemLine>{{note.longDesc}}</div>
-
-    </mat-list-item>
-
-  }
-</mat-list>
-
+<mat-list> </mat-list>
