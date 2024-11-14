@@ -1,13 +1,12 @@
-import { effect, signal } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { effect, signal } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 interface Selections {
-  origin: string,
-  data: string
+  origin: string;
+  data: string;
 }
 
 export class SelectionDataService {
-
   selectionsArray!: Selections[];
 
   private tableHeader = new BehaviorSubject<any>(null);
@@ -15,22 +14,26 @@ export class SelectionDataService {
 
   private timeData = new BehaviorSubject<any>(null);
   readonly timeData$ = this.timeData.asObservable();
-  recentSearches = signal([""]);
+  recentSearches = signal(['']);
 
   overlayOpen = signal(false);
-
   searchTerm = signal<string>('');
 
   constructor() {
-    this.selectionsArray = [{ "origin": 'timeInterval', "data": '1wk' }, { "origin": 'timeRange', "data": '5y' }];
+    this.selectionsArray = [
+      { origin: 'timeInterval', data: '1wk' },
+      { origin: 'timeRange', data: '5y' },
+      { origin: 'searchTerm', data: 'AMRN' },
+    ];
     this.updateTimeData(this.selectionsArray);
     // page will not load if local storage is empty, initialize here
-    if (!localStorage.getItem("recentSearches")) {
-      this.recentSearches.set([""]);
+    if (!localStorage.getItem('recentSearches')) {
+      this.recentSearches.set(['']);
     } else {
-      this.recentSearches = signal((JSON.parse(window.localStorage.getItem('recentSearches') ?? "[]")));
+      this.recentSearches = signal(
+        JSON.parse(window.localStorage.getItem('recentSearches') ?? '[]')
+      );
     }
-
   }
 
   updateTimeData(arrayData: Selections[]) {
@@ -43,15 +46,17 @@ export class SelectionDataService {
 
   // replace existing selections with new
   setTimeSelections(origin: string, data: string) {
-      this.selectionsArray = this.selectionsArray.filter(item => item.origin !== origin);
-      this.selectionsArray.push({ "origin": origin, "data": data });
-      this.timeData.next(this.selectionsArray);
-      console.log(this.selectionsArray);
+    this.selectionsArray = this.selectionsArray.filter(
+      (item) => item.origin !== origin
+    );
+    this.selectionsArray.push({ origin: origin, data: data });
+    this.timeData.next(this.selectionsArray);
   }
 
   saveLocalStorage = effect(() => {
-    window.localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches()));
-
-  })
-
+    window.localStorage.setItem(
+      'recentSearches',
+      JSON.stringify(this.recentSearches())
+    );
+  });
 }

@@ -130,9 +130,12 @@ export class TableComponent implements AfterViewInit, OnDestroy {
         const timeRange = timeData.find(
           (value) => value.origin === 'timeRange'
         ).data;
-        console.log('timeInterval ', timeInterval);
+        const ticker = timeData.find(
+          (value) => value.origin === 'searchTerm'
+        ).data;
+        console.log('ticker ', ticker);
         this.dataService
-          .getData(timeInterval, timeRange)
+          .getData(timeInterval, timeRange, ticker)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (data: SummaryStockDataDto) => {

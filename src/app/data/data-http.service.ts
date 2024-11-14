@@ -46,7 +46,7 @@ export class DataService {
   //   this.timeIntervalUnit = timeIntervalUnit;
   // }
 
-  getData(timeInterval?: string, timeRange?: string): Observable<SummaryStockDataDto> {
+  getData(timeInterval?: string, timeRange?: string, ticker?: string): Observable<SummaryStockDataDto> {
     const headers = new HttpHeaders({
       'x-rapidapi-key': environment.apiKey,
       'x-rapidapi-host': 'apidojo-yahoo-finance-v1.p.rapidapi.com',
@@ -63,6 +63,10 @@ export class DataService {
 
     if (timeRange) {
       this.timeRange = timeRange;
+    }
+
+    if (ticker) {
+      this.ticker = ticker;
     }
 
     let http = this.http

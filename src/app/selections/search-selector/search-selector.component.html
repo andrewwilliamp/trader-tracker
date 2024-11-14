@@ -29,7 +29,6 @@
   [cdkConnectedOverlayOpen]="overlayOpen()"
   (overlayOutsideClick)="overlayOpen.set(false)"
 >
-  <mat-divider/>
   <mat-action-list>
     @for (search of shortRecentSearches; track search) {
     <mat-list-item (click)="performSearch(search)">
@@ -43,6 +42,3 @@
   </mat-action-list>
 </ng-template>
 
-{{ value }}
-
-<mat-list> </mat-list>

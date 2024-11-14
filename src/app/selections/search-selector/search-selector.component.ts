@@ -52,6 +52,7 @@ export class SearchSelectorComponent {
     if (!searchTerm) return;
     this.searchTerm.set(searchTerm);
     this.overlayOpen.set(false);
+    this.selectionDataService.setTimeSelections('searchTerm', searchTerm)
     // add additional functionality
     this.addToRecentSearches(searchTerm);
     this.updateRecentSearches();
@@ -77,6 +78,7 @@ export class SearchSelectorComponent {
     this.recentSearches.set(
       this.recentSearches().filter((terms: string) => terms !== searchTerm)
     );
+    this.updateRecentSearches();
   }
 
   performSearch(searchTerm: string) {
