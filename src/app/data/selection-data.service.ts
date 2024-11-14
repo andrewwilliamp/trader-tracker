@@ -1,5 +1,4 @@
 import { effect, signal } from "@angular/core";
-import { sign } from "crypto";
 import { BehaviorSubject } from "rxjs";
 
 interface Selections {
@@ -16,14 +15,22 @@ export class SelectionDataService {
 
   private timeData = new BehaviorSubject<any>(null);
   readonly timeData$ = this.timeData.asObservable();
+  recentSearches = signal([""]);
 
   overlayOpen = signal(false);
-  recentSearches = signal<string[]>(JSON.parse(window.localStorage.getItem('recentSearches') ?? '["test"]'));
+
   searchTerm = signal<string>('');
 
   constructor() {
     this.selectionsArray = [{ "origin": 'timeInterval', "data": '1wk' }, { "origin": 'timeRange', "data": '5y' }];
     this.updateTimeData(this.selectionsArray);
+    // page will not load if local storage is empty, initialize here
+    if (!localStorage.getItem("recentSearches")) {
+      this.recentSearches.set([""]);
+    } else {
+      this.recentSearches = signal((JSON.parse(window.localStorage.getItem('recentSearches') ?? "[]")));
+    }
+
   }
 
   updateTimeData(arrayData: Selections[]) {
@@ -44,6 +51,7 @@ export class SelectionDataService {
 
   saveLocalStorage = effect(() => {
     window.localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches()));
+
   })
 
 }

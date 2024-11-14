@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject, WritableSignal } from '@angular/core';
 import { MatFormFieldModule, MatSuffix } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -32,9 +32,8 @@ interface StockModel {
 export class SearchSelectorComponent {
   private selectionDataService = inject(SelectionDataService);
   overlayOpen = this.selectionDataService.overlayOpen;
-  recentSearches = this.selectionDataService.recentSearches;
-  shortRecentSearches = this.selectionDataService.recentSearches().slice(0, 5);
-
+  recentSearches = this.selectionDataService.recentSearches as WritableSignal<string[]>;
+  shortRecentSearches = this.selectionDataService.recentSearches().filter(x => x !== "").slice(0, 5);
   searchTerm = this.selectionDataService.searchTerm;
 
   value: String = '';
@@ -70,7 +69,7 @@ export class SearchSelectorComponent {
 
   updateRecentSearches() {
     this.shortRecentSearches = this.selectionDataService
-      .recentSearches()
+      .recentSearches().filter(x => x !== "")
       .slice(0, 5);
   }
 
