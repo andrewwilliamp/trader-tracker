@@ -1,12 +1,14 @@
-import { Component, inject, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, WritableSignal } from '@angular/core';
 import { MatFormFieldModule, MatSuffix } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
+import { MatListModule, MatSelectionListChange } from '@angular/material/list';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { SelectionDataService } from '../../data/selection-data.service';
+import { PageEvent, MatPaginatorModule} from '@angular/material/paginator';
+import { nasdaqTickers } from '../../data/nasdaq_full_tickers';
 
 interface StockModel {
   shortDesc: string;
@@ -25,18 +27,43 @@ interface StockModel {
     MatListModule,
     MatButtonModule,
     OverlayModule,
+    MatPaginatorModule,
+
   ],
   templateUrl: './search-selector.component.html',
   styleUrl: './search-selector.component.css',
 })
-export class SearchSelectorComponent {
+export class SearchSelectorComponent implements OnInit {
   private selectionDataService = inject(SelectionDataService);
   overlayOpen = this.selectionDataService.overlayOpen;
   recentSearches = this.selectionDataService.recentSearches as WritableSignal<string[]>;
   shortRecentSearches = this.selectionDataService.recentSearches().filter(x => x !== "").slice(0, 5);
   searchTerm = this.selectionDataService.searchTerm;
+  pageEvent!: PageEvent;
 
   value: String = '';
+
+  tickers: any[] = nasdaqTickers;
+  paginatedItems: any[] | undefined;
+
+  ngOnInit(): void {
+    const start = this.pageIndex * this.pageSize;
+    const end = start + this.pageSize;
+    this.paginatedItems = this.tickers.slice(start, end);
+  }
+
+  onPageChange(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+  }
+
+  onSelectionChange(event: MatSelectionListChange) {
+    this.selectedItems = event.source.selectedOptions.selected.map(option => option.value);
+  }
+
+
+  pageSize = 10;
+  pageIndex = 0;
+  selectedItems: any[] = []
 
   stocks: StockModel[] = [
     { shortDesc: 'year-0', longDesc: 'Year' },
@@ -74,12 +101,6 @@ export class SearchSelectorComponent {
       .slice(0, 5);
   }
 
-  deleteRecentSearch(searchTerm: string) {
-    this.recentSearches.set(
-      this.recentSearches().filter((terms: string) => terms !== searchTerm)
-    );
-    this.updateRecentSearches();
-  }
 
   performSearch(searchTerm: string) {
     this.search(searchTerm);

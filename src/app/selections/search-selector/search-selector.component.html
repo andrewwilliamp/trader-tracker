@@ -1,7 +1,9 @@
 <div mat-subheader>Stocks</div>
 
 <mat-form-field cdkOverlayOrigin #overlayPosition="cdkOverlayOrigin">
-  <input #searchInput
+  <mat-label>Ticker</mat-label>
+  <input
+    #searchInput
     [value]="searchTerm()"
     type="text"
     matInput
@@ -31,14 +33,24 @@
 >
   <mat-action-list>
     @for (search of shortRecentSearches; track search) {
+    <mat-divider />
     <mat-list-item (click)="performSearch(search)">
       <mat-icon matListItemIcon>history</mat-icon>
-      <h3>{{ search }}</h3>
-      <button matListItemMeta mat-icon-button (click)="deleteRecentSearch(search)">
-        <mat-icon>close</mat-icon>
-      </button>
+      <h3 matListItemTitle>{{ search }}</h3>
+      <!-- <button matListItemMeta mat-icon-button (click)="deleteRecentSearch(search)">
+          <mat-icon>close</mat-icon>
+        </button> -->
     </mat-list-item>
+    <mat-divider />
     }
   </mat-action-list>
 </ng-template>
+
+<mat-selection-list #selectionList (selectionChange)="onSelectionChange($event)">
+  <mat-list-option *ngFor="let item of paginatedItems" [value]="item">
+    {{ item.symbol }}
+  </mat-list-option>
+</mat-selection-list>
+
+<mat-paginator [length]="tickers.length" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
 
