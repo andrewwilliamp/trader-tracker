@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, ViewChild, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, WritableSignal } from '@angular/core';
 import { MatFormFieldModule, MatSuffix } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule, MatSelectionListChange } from '@angular/material/list';
@@ -47,6 +47,7 @@ export class SearchSelectorComponent implements OnInit {
   paginatedItems: any[] = [];
 
   ngOnInit(): void {
+    this.updateTable();
   }
 
   updateTable() {
