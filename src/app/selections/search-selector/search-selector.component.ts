@@ -62,6 +62,7 @@ export class SearchSelectorComponent implements OnInit {
 
   onPageChange(event: PageEvent) {
     this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
     this.updateTable();
   }
 
@@ -71,6 +72,7 @@ export class SearchSelectorComponent implements OnInit {
   }
 
 
+  pageSizeOptions = [5, 10, 15];
   pageSize = 10;
   pageIndex = 0;
   selectedItems: any[] = []
