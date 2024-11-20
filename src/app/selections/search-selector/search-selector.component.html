@@ -8,17 +8,18 @@
     type="text"
     matInput
     placeholder="Search"
-    [(ngModel)]="value"
+    [(ngModel)]="searchInputValue"
     (click)="overlayOpen.set(true)"
     (keydown.ENTER)="search(searchInput.value)"
   />
-  @if (value) {
+  {{searchInputValue}}
+  @if (searchInputValue) {
   <button
     matButton
     matSuffix
     mat-icon-button
     aria-label="Clear"
-    (click)="value = ''"
+    (click)="searchInputValue = ''"
   >
     <mat-icon>clear</mat-icon>
   </button>
@@ -32,11 +33,11 @@
   (overlayOutsideClick)="overlayOpen.set(false)"
 >
   <mat-action-list>
-    @for (search of shortRecentSearches; track search) {
+    @for (searchTerm of shortRecentSearches; track searchTerm) {
     <mat-divider />
-    <mat-list-item (click)="performSearch(search)">
+    <mat-list-item (click)="search(searchTerm)">
       <mat-icon matListItemIcon>history</mat-icon>
-      <h3 matListItemTitle>{{ search }}</h3>
+      <h3 matListItemTitle>{{ searchTerm }}</h3>
       <!-- <button matListItemMeta mat-icon-button (click)="deleteRecentSearch(search)">
           <mat-icon>close</mat-icon>
         </button> -->
@@ -46,11 +47,22 @@
   </mat-action-list>
 </ng-template>
 
-<mat-selection-list #selectionList (selectionChange)="onSelectionChange($event)">
-  <mat-list-option *ngFor="let item of paginatedItems" [value]="item">
-    {{ item.symbol }}
+<mat-selection-list
+  #selectionList
+  hideSingleSelectionIndicator
+  [multiple]="false"
+  (selectionChange)="onSelectionChange($event)"
+>
+  @for (item of paginatedItems; track item.symbol) {
+  <mat-list-option [value]="item.symbol">
+    <span matListItemTitle>{{ item.symbol }}</span>
+    <span matListItemLine>{{ item.name }}</span>
   </mat-list-option>
+  }
 </mat-selection-list>
 
-<mat-paginator [length]="tickers.length" [pageSize]="pageSize" (page)="onPageChange($event)"></mat-paginator>
-
+<mat-paginator
+  [length]="tickers.length"
+  [pageSize]="pageSize"
+  (page)="onPageChange($event)"
+></mat-paginator>

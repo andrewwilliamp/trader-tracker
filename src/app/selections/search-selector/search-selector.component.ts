@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, ViewChild, WritableSignal } from '@angular/core';
 import { MatFormFieldModule, MatSuffix } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule, MatSelectionListChange } from '@angular/material/list';
@@ -41,23 +41,32 @@ export class SearchSelectorComponent implements OnInit {
   searchTerm = this.selectionDataService.searchTerm;
   pageEvent!: PageEvent;
 
-  value: String = '';
+  searchInputValue: string = '';
 
   tickers: any[] = nasdaqTickers;
-  paginatedItems: any[] | undefined;
+  paginatedItems: any[] = [];
 
   ngOnInit(): void {
+  }
+
+  updateTable() {
     const start = this.pageIndex * this.pageSize;
     const end = start + this.pageSize;
-    this.paginatedItems = this.tickers.slice(start, end);
+    let row: any = [];
+    for (let i = 0; i < this.tickers.length; i++) {
+      row.push({symbol: this.tickers[i].symbol, name: this.tickers[i].name});
+    }
+    this.paginatedItems = row.slice(start, end);
   }
 
   onPageChange(event: PageEvent) {
     this.pageIndex = event.pageIndex;
+    this.updateTable();
   }
 
   onSelectionChange(event: MatSelectionListChange) {
     this.selectedItems = event.source.selectedOptions.selected.map(option => option.value);
+    this.search(this.selectedItems.toString());
   }
 
 
@@ -101,8 +110,4 @@ export class SearchSelectorComponent implements OnInit {
       .slice(0, 5);
   }
 
-
-  performSearch(searchTerm: string) {
-    this.search(searchTerm);
-  }
 }
