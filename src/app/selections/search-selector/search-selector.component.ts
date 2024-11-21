@@ -9,6 +9,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { SelectionDataService } from '../../data/selection-data.service';
 import { PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import { nasdaqTickers } from '../../data/nasdaq_full_tickers';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 
 interface StockModel {
   shortDesc: string;
@@ -28,7 +29,7 @@ interface StockModel {
     MatButtonModule,
     OverlayModule,
     MatPaginatorModule,
-
+    MatTableModule
   ],
   templateUrl: './search-selector.component.html',
   styleUrl: './search-selector.component.css',
@@ -43,10 +44,17 @@ export class SearchSelectorComponent implements OnInit {
 
   searchInputValue: string = '';
 
-  tickers: any[] = nasdaqTickers;
+  TICKERS_DATA: any[] = nasdaqTickers;
+  tickers = new MatTableDataSource(this.TICKERS_DATA)
   paginatedItems: any[] = [];
 
   ngOnInit(): void {
+    this.updateTable();
+  }
+
+  filterTickers(filterValue: string) {
+    this.tickers.filter = filterValue.trim().toUpperCase();
+    this.TICKERS_DATA = this.tickers.filteredData;
     this.updateTable();
   }
 
@@ -54,8 +62,8 @@ export class SearchSelectorComponent implements OnInit {
     const start = this.pageIndex * this.pageSize;
     const end = start + this.pageSize;
     let row: any = [];
-    for (let i = 0; i < this.tickers.length; i++) {
-      row.push({symbol: this.tickers[i].symbol, name: this.tickers[i].name});
+    for (let i = 0; i < this.TICKERS_DATA.length; i++) {
+      row.push({symbol: this.TICKERS_DATA[i].symbol, name: this.TICKERS_DATA[i].name});
     }
     this.paginatedItems = row.slice(start, end);
   }
@@ -89,20 +97,30 @@ export class SearchSelectorComponent implements OnInit {
 
   search(searchTerm: string) {
     if (!searchTerm) return;
-    this.searchTerm.set(searchTerm);
-    this.overlayOpen.set(false);
-    this.selectionDataService.setTimeSelections('searchTerm', searchTerm)
-    // add additional functionality
-    this.addToRecentSearches(searchTerm);
-    this.updateRecentSearches();
+    const upperCaseTerm = searchTerm.toUpperCase();
+    let searchTermFound = false;
+    for (let i = 0; i < this.TICKERS_DATA.length; i++) {
+      if(this.TICKERS_DATA[i].symbol === upperCaseTerm) {
+        searchTermFound = true;
+        this.searchTerm.set(searchTerm);
+        this.overlayOpen.set(false);
+        this.selectionDataService.setTimeSelections('searchTerm', searchTerm)
+        // add additional functionality here for dynamic results list
+        this.addToRecentSearches(searchTerm);
+        this.updateRecentSearches();
+        break;
+      }
+    }
+    if (!searchTermFound) {
+      alert('please enter a valid stock ticker');
+    }
   }
 
   addToRecentSearches(searchTerm: string) {
-    const upperCaseTerm = searchTerm.toUpperCase();
     this.recentSearches.set([
-      upperCaseTerm,
+      searchTerm,
       ...this.recentSearches()
-        .filter((terms: string) => terms !== upperCaseTerm)
+        .filter((terms: string) => terms !== searchTerm)
         .slice(0, 5),
     ]);
   }

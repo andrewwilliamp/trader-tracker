@@ -11,6 +11,7 @@
     [(ngModel)]="searchInputValue"
     (click)="overlayOpen.set(true)"
     (keydown.ENTER)="search(searchInput.value)"
+    (keyup)="filterTickers(searchInput.value)"
   />
   @if (searchInputValue) {
   <button
@@ -61,8 +62,9 @@
 </mat-selection-list>
 
 <mat-paginator
-  [length]="tickers.length"
+  [length]="TICKERS_DATA.length"
   [pageSize]="pageSize"
   [pageSizeOptions]="pageSizeOptions"
+  [showFirstLastButtons]="true"
   (page)="onPageChange($event)"
 ></mat-paginator>
