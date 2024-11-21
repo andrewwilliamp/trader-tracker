@@ -21,7 +21,7 @@ export class TableComponent implements AfterViewInit, OnDestroy {
   dataSets = new Array();
 
   ngAfterViewInit(): void {
-    this.updateGridData();
+    // this.updateGridData();
   }
 
   ngOnDestroy() {

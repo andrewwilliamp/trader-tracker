@@ -112,7 +112,7 @@ export class SearchSelectorComponent implements OnInit {
       }
     }
     if (!searchTermFound) {
-      alert('please enter a valid stock ticker');
+      alert('Ticker not found. Please search from the list below.');
     }
   }
 
