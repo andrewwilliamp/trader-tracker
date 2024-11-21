@@ -29,41 +29,6 @@ export class ChartComponent implements OnInit {
   dataAdapter: any;
   dataSets = new Array();
 
-  // dynamically changes based on user selection of timePeriod to view stock data
-  @Input() timePeriod: string = 'month';
-
-  months: string[] = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ];
-
-  // source: any =
-  // {
-  //     datatype: "json",
-  //     datafields: [
-  //         { name: 'Date' },
-  //         { name: 'NASDAQ' }
-  //     ]
-  // };
-
-  sampleData: any[] = [
-    { Date: '01-Jan-2014', NASDAQ: 200 },
-    { Date: '02-Feb-2014', NASDAQ: 220 },
-    { Date: '03-Mar-2014', NASDAQ: 240 },
-    { Date: '04-Apr-2014', NASDAQ: 360 },
-    { Date: '05-May-2014', NASDAQ: 280 },
-  ];
-
   ngOnInit(): void {
     this.updateChartData();
   }
@@ -180,7 +145,7 @@ export class ChartComponent implements OnInit {
         minValue: 0,
         maxValue: 2,
         displayValueAxis: true,
-        description: 'Time in minutes',
+        description: 'Daily Closing Price ($)',
         axisSize: 'auto',
         tickMarksColor: '#888888',
       },
