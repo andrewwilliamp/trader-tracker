@@ -30,7 +30,7 @@ export class ChartComponent implements OnInit {
   dataSets = new Array();
 
   ngOnInit(): void {
-    this.updateChartData();
+    // this.updateChartData();
   }
 
   updateChartData = () => {
@@ -59,7 +59,7 @@ export class ChartComponent implements OnInit {
         console.log('ticker ', ticker);
         this.dataService
           // FIXME
-          .getData('1mo', '6mo', ticker)
+          .getData(timeInterval, timeRange, ticker)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (data: SummaryStockDataDto) => {
@@ -80,7 +80,6 @@ export class ChartComponent implements OnInit {
               console.log(this.dataSets);
               source.localdata = this.dataSets;
               this.dataAdapter = new jqx.dataAdapter(source);
-
               const panelHeader =
                 data.chart.result[0].meta.symbol +
                 ', ' +
@@ -104,6 +103,7 @@ export class ChartComponent implements OnInit {
   xAxis: any = {
     dataField: 'Date',
     type: 'date',
+    axisSize: 'auto'
   };
   //
   // baseUnit: this.timePeriod,
@@ -128,22 +128,12 @@ export class ChartComponent implements OnInit {
   // }
   // };
 
-  valueAxis: any = {
-    visible: true,
-    title: { text: 'Daily Closing Price<br>' },
-    tickMarks: { color: '#BCBCBC' },
-    minValue: 0,
-    maxValue: 2.0,
-  };
 
   seriesGroups: any = [
     {
       type: 'line',
-      series: [{ dataField: 'ClosePrice', displayText: 'AMRN' }],
+      series: [{ dataField: 'ClosePrice', displayText: 'NASDAQ' }],
       valueAxis: {
-        unitInterval: .1,
-        minValue: 0,
-        maxValue: 2,
         displayValueAxis: true,
         description: 'Daily Closing Price ($)',
         axisSize: 'auto',
