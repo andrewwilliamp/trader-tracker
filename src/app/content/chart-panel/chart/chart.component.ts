@@ -58,7 +58,6 @@ export class ChartComponent implements OnInit {
         ).data;
         console.log('ticker ', ticker);
         this.dataService
-          // FIXME
           .getData(timeInterval, timeRange, ticker)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
