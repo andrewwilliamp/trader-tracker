@@ -18,6 +18,7 @@ export class SelectionDataService {
 
   overlayOpen = signal(false);
   searchTerm = signal<string>('');
+  selectionsPaneHidden = signal(false);
 
   constructor() {
     this.selectionsArray = [
@@ -34,6 +35,10 @@ export class SelectionDataService {
         JSON.parse(window.localStorage.getItem('recentSearches') ?? '[]')
       );
     }
+  }
+
+  toggleSidebar() {
+    this.selectionsPaneHidden.set(!this.selectionsPaneHidden());
   }
 
   updateTimeData(arrayData: Selections[]) {

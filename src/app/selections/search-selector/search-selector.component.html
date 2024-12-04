@@ -1,4 +1,6 @@
-<div mat-subheader>Stocks</div>
+<div class="search-selector-outer" >
+
+<div class="subheader" mat-subheader>Stocks</div>
 
 <mat-form-field cdkOverlayOrigin #overlayPosition="cdkOverlayOrigin">
   <mat-label>Ticker</mat-label>
@@ -12,6 +14,7 @@
     (click)="overlayOpen.set(true)"
     (keydown.ENTER)="search(searchInput.value)"
     (keyup)="filterTickers(searchInput.value)"
+    class="input-button"
   />
   @if (searchInputValue) {
   <button
@@ -24,6 +27,7 @@
     <mat-icon>clear</mat-icon>
   </button>
   }
+
 </mat-form-field>
 
 <ng-template
@@ -47,6 +51,7 @@
   </mat-action-list>
 </ng-template>
 
+<div class="selection-list">
 <mat-selection-list
   #selectionList
   hideSingleSelectionIndicator
@@ -54,13 +59,13 @@
   (selectionChange)="onSelectionChange($event)"
 >
   @for (item of paginatedItems; track item.symbol) {
-  <mat-list-option [value]="item.symbol">
+  <mat-list-option [value]="item.symbol" id="mat-list-option">
     <span matListItemTitle>{{ item.symbol }}</span>
     <span matListItemLine>{{ item.name }}</span>
   </mat-list-option>
   }
 </mat-selection-list>
-
+</div>
 <mat-paginator
   [length]="TICKERS_DATA.length"
   [pageSize]="pageSize"
@@ -68,3 +73,5 @@
   [showFirstLastButtons]="true"
   (page)="onPageChange($event)"
 ></mat-paginator>
+
+</div>

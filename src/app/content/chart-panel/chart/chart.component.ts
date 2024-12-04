@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  inject,
-  Input,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { jqxChartModule } from 'jqwidgets-ng/jqxchart';
@@ -102,7 +94,7 @@ export class ChartComponent implements OnInit {
   xAxis: any = {
     dataField: 'Date',
     type: 'date',
-    axisSize: 'auto'
+    axisSize: 'auto',
   };
   //
   // baseUnit: this.timePeriod,
@@ -126,7 +118,6 @@ export class ChartComponent implements OnInit {
   //     offset: { x: 0, y: -25 }
   // }
   // };
-
 
   seriesGroups: any = [
     {

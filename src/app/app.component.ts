@@ -6,6 +6,7 @@ import { ChartPanelComponent } from './content/chart-panel/chart-panel.component
 import { TablePanelComponent } from './content/table-panel/table-panel.component';
 import { SelectionDataService } from './data/selection-data.service';
 import { DataService } from './data/data-http.service';
+import { ContentComponent } from "./content/content.component";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import { DataService } from './data/data-http.service';
     SelectionsComponent,
     ChartPanelComponent,
     TablePanelComponent,
-  ],
+    ContentComponent
+],
   providers: [SelectionDataService, DataService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

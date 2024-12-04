@@ -1,5 +1,9 @@
-<app-time-selector></app-time-selector>
-<app-search-selector></app-search-selector>
-<app-chart-panel></app-chart-panel>
-<app-table-panel></app-table-panel>
+<mat-sidenav-container autosize="true">
+  <mat-sidenav-content>
+    <span [hidden]="selectionPaneHidden()"
 
+      >{{selectionDataService.selectionsPaneHidden() }}<app-time-selector></app-time-selector>
+      <app-search-selector></app-search-selector
+    ></span>
+  </mat-sidenav-content>
+</mat-sidenav-container>

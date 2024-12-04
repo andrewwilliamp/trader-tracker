@@ -41,6 +41,7 @@ export class SearchSelectorComponent implements OnInit {
   shortRecentSearches = this.selectionDataService.recentSearches().filter(x => x !== "").slice(0, 5);
   searchTerm = this.selectionDataService.searchTerm;
   pageEvent!: PageEvent;
+  invalidInput = false;
 
   searchInputValue: string = '';
 
@@ -80,7 +81,7 @@ export class SearchSelectorComponent implements OnInit {
   }
 
 
-  pageSizeOptions = [5, 10, 15];
+  pageSizeOptions = [10, 15, 25];
   pageSize = 10;
   pageIndex = 0;
   selectedItems: any[] = []
@@ -102,17 +103,19 @@ export class SearchSelectorComponent implements OnInit {
     for (let i = 0; i < this.TICKERS_DATA.length; i++) {
       if(this.TICKERS_DATA[i].symbol === upperCaseTerm) {
         searchTermFound = true;
-        this.searchTerm.set(searchTerm);
+        this.searchTerm.set(upperCaseTerm);
         this.overlayOpen.set(false);
-        this.selectionDataService.setTimeSelections('searchTerm', searchTerm)
+        this.selectionDataService.setTimeSelections('searchTerm', upperCaseTerm)
         // add additional functionality here for dynamic results list
-        this.addToRecentSearches(searchTerm);
+        this.addToRecentSearches(upperCaseTerm);
         this.updateRecentSearches();
         break;
       }
     }
     if (!searchTermFound) {
       alert('Ticker not found. Please search from the list below.');
+      this.TICKERS_DATA = nasdaqTickers;
+      this.updateTable();
     }
   }
 

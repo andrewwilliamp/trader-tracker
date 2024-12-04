@@ -1,15 +1,10 @@
-<div class="header-outer">
-
-  <div class="header-title">
-    <h1>Trader Tracker</h1>
-  </div>
-
-  <nav class="header-nav">
-    <ul>
-      <li><a href="">Home</a></li>
-      <li><a href="">Charts</a></li>
-      <li><a href="">Data</a></li>
-    </ul>
-  </nav>
-
-</div>
+<mat-toolbar>
+  <mat-button-toggle class= "sidebar-toggle" (change)="toggleSidebar()" single>View Selections</mat-button-toggle>
+  <span class="title-text">Trader Tracker</span>
+  <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>favorite</mat-icon>
+  </button> -->
+  <button mat-icon-button class="example-icon" aria-label="icon-button with share icon" matTooltip="GitHub" matTooltipPosition="below">
+    <a href="https://github.com/andrewwilliamp" target="_blank"><mat-icon>share</mat-icon></a>
+  </button>
+</mat-toolbar>

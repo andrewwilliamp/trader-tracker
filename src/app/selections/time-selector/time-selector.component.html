@@ -1,15 +1,15 @@
 <div class="time-selector-outer">
 
-  <mat-form-field class="form-field">
+  <mat-form-field>
     <mat-label>Time Interval</mat-label>
-    <mat-select name="option" (selectionChange)="updateTimeSelections($event)" [(value)]="timeIntervals[0].value" aria-label="timeInterval">
+    <mat-select class="mat-selection" name="option" (selectionChange)="updateTimeSelections($event)" [(value)]="timeIntervals[0].value" aria-label="timeInterval">
       @for (option of timeIntervals; track option) {
         <mat-option [value]="option.value">{{ option.viewValue }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field class="form-field">
+  <mat-form-field id ="test">
     <mat-label>Time Range</mat-label>
     <mat-select name="option" (selectionChange)="updateTimeSelections($event)" [(value)]="timeRanges[0].value" aria-label="timeRange">
       @for (option of timeRanges; track option) {
