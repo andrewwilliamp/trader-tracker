@@ -2,6 +2,24 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
+## Setup 
+
+Create a RapidAPI account by following the setps in this link: https://docs.rapidapi.com/v1.0/docs/account-creation-and-settings#:~:text=How%20to%20create%20a%20RapidAPI,%2C%20Facebook%2C%20or%20Google%20account.
+
+Login and navigate to the Yahu Financials API: https://rapidapi.com/apidojo/api/yahoo-finance1
+
+Subscribe to the stock/v3/get-chart API and generate your own API key: https://rapidapi.com/apidojo/api/yahoo-finance1/playground/apiendpoint_55ded4a7-600c-4133-8d63-552b777ee28d
+
+In the root level of the project, create an environment.ts file.
+In the environment.ts file, paste the following code:
+
+export const environment = {
+  production: false,
+  apiKey: 'YOUR_API_KEY'
+};
+
+Build and run the project locally! Test out the search tool for various stocks or select them from the paginated list :)
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
