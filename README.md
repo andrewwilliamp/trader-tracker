@@ -13,10 +13,10 @@ Subscribe to the stock/v3/get-chart API and generate your own API key: https://r
 In the root level of the project, create an environment.ts file.
 In the environment.ts file, paste the following code:
 
-export const environment = {
+`export const environment = {
   production: false,
   apiKey: 'YOUR_API_KEY'
-};
+};`
 
 Build and run the project locally! Test out the search tool for various stocks or select them from the paginated list :)
 
