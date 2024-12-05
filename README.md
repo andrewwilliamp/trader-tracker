@@ -8,7 +8,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Setup 
 
-Create a RapidAPI account by following the setps in this link: https://docs.rapidapi.com/v1.0/docs/account-creation-and-settings#:~:text=How%20to%20create%20a%20RapidAPI,%2C%20Facebook%2C%20or%20Google%20account.
+Create a RapidAPI account by following the steps in this link: https://docs.rapidapi.com/v1.0/docs/account-creation-and-settings#:~:text=How%20to%20create%20a%20RapidAPI,%2C%20Facebook%2C%20or%20Google%20account.
 
 Login and navigate to the Yahu Financials API: https://rapidapi.com/apidojo/api/yahoo-finance1
 
