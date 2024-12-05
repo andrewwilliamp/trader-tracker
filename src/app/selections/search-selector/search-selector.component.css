@@ -1,11 +1,18 @@
-input {
-  display: inline-block;
+.search-selector-outer {
+  display: grid;
 }
 
-button {
-  display: inline-block;
+/* keep secondary text from overflowing */
+.mdc-list-item__secondary-text {
+  text-wrap: wrap;
 }
 
-mat-icon {
-  transform: scale(.75);
+/* update height of mat option list to fit longer stock names */
+.mdc-list-item.mdc-list-item--with-two-lines {
+  height: 70px;
+}
+
+.selection-list {
+  height: 720px;
+  overflow-y: scroll;
 }

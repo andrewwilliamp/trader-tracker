@@ -1,0 +1,20 @@
+app-time-selector {
+  display: inline-block;
+  width: 100%;
+  min-width: max-content;
+}
+
+app-search-selector {
+  display: block;
+}
+
+mat-sidenav-container {
+  width: fit-content;
+  height: max-content;
+
+}
+
+mat-sidenav {
+  width: 15%; background-color: gray;
+}
+

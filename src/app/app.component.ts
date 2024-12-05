@@ -4,6 +4,9 @@ import { HeaderComponent } from './header/header.component';
 import { SelectionsComponent } from './selections/selections.component';
 import { ChartPanelComponent } from './content/chart-panel/chart-panel.component';
 import { TablePanelComponent } from './content/table-panel/table-panel.component';
+import { SelectionDataService } from './data/selection-data.service';
+import { DataService } from './data/data-http.service';
+import { ContentComponent } from "./content/content.component";
 
 @Component({
   selector: 'app-root',
@@ -14,7 +17,9 @@ import { TablePanelComponent } from './content/table-panel/table-panel.component
     SelectionsComponent,
     ChartPanelComponent,
     TablePanelComponent,
-  ],
+    ContentComponent
+],
+  providers: [SelectionDataService, DataService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

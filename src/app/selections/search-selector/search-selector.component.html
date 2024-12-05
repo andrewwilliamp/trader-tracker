@@ -1,25 +1,77 @@
+<div class="search-selector-outer" >
 
-<div mat-subheader>Stocks</div>
-<mat-form-field>
-  <input type="text" matInput placeholder="Search" [(ngModel)]="value"/>
-  @if (value) {
-    <button matButton matSuffix  mat-icon-button aria-label="Clear" (click)="value=''">
-      <mat-icon >clear</mat-icon>
-    </button>
+<div class="subheader" mat-subheader>Stocks</div>
+
+<mat-form-field cdkOverlayOrigin #overlayPosition="cdkOverlayOrigin">
+  <mat-label>Ticker</mat-label>
+  <input
+    #searchInput
+    [value]="searchTerm()"
+    type="text"
+    matInput
+    placeholder="Search"
+    [(ngModel)]="searchInputValue"
+    (click)="overlayOpen.set(true)"
+    (keydown.ENTER)="search(searchInput.value)"
+    (keyup)="filterTickers(searchInput.value)"
+    class="input-button"
+  />
+  @if (searchInputValue) {
+  <button
+    matButton
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+    (click)="searchInputValue = ''"
+  >
+    <mat-icon>clear</mat-icon>
+  </button>
   }
 
 </mat-form-field>
-{{ value }}
 
-<mat-list>
-  @for (note of stocks; track note) {
-    <mat-list-item matSuffix>
-        <mat-icon matListItemIcon>circle</mat-icon>
-        <div matListItemTitle>{{note.longDesc}}</div>
-        <div matListItemLine>{{note.longDesc}}</div>
-
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="overlayPosition"
+  [cdkConnectedOverlayOpen]="overlayOpen()"
+  (overlayOutsideClick)="overlayOpen.set(false)"
+>
+  <mat-action-list>
+    @for (searchTerm of shortRecentSearches; track searchTerm) {
+    <mat-divider />
+    <mat-list-item (click)="search(searchTerm)">
+      <mat-icon matListItemIcon>history</mat-icon>
+      <h3 matListItemTitle>{{ searchTerm }}</h3>
+      <!-- <button matListItemMeta mat-icon-button (click)="deleteRecentSearch(search)">
+          <mat-icon>close</mat-icon>
+        </button> -->
     </mat-list-item>
+    <mat-divider />
+    }
+  </mat-action-list>
+</ng-template>
 
+<div class="selection-list">
+<mat-selection-list
+  #selectionList
+  hideSingleSelectionIndicator
+  [multiple]="false"
+  (selectionChange)="onSelectionChange($event)"
+>
+  @for (item of paginatedItems; track item.symbol) {
+  <mat-list-option [value]="item.symbol" id="mat-list-option">
+    <span matListItemTitle>{{ item.symbol }}</span>
+    <span matListItemLine>{{ item.name }}</span>
+  </mat-list-option>
   }
-</mat-list>
+</mat-selection-list>
+</div>
+<mat-paginator
+  [length]="TICKERS_DATA.length"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  [showFirstLastButtons]="true"
+  (page)="onPageChange($event)"
+></mat-paginator>
 
+</div>

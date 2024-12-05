@@ -1,34 +1,13 @@
-
-.header-outer {
-  border-bottom: 1px solid black;
-  box-sizing: border-box;
-  background-color: rgb(221, 218, 218);
+.spacer {
+  flex: 1 1 auto;
 }
 
+.sidebar-toggle {
+  width: 200px !important;
+}
 
-.header-title {
+.title-text {
+  text-align: center;
   display: inline-block;
-  box-sizing: border-box;
-  padding: 5px;
-
-}
-
-.header-nav {
-  float: right;
-  padding-left: 15%;
-  justify-content: right;
-}
-
-
-.header-nav ul {
-  list-style: none;
-  padding: 15px;
-  text-align: right;
-  font-size: 20px;
-}
-
-.header-nav ul li {
-  display: inline-block;
-  padding: 0 10px 0 10px;
-  justify-content: center;
+  width: 100%;
 }
