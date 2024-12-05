@@ -2,6 +2,8 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
+TraderTracker is a basic Angular web application that utilizes Yahoo Financials stock data. The application allows users to quickly view stock information such as Low, High, Open, and Closing prices. It also provides various time metrics to filter on, a search tool for stocks, a chart, and a table for easy consumption of the stock information. 
+
 ## Setup 
 
 Create a RapidAPI account by following the setps in this link: https://docs.rapidapi.com/v1.0/docs/account-creation-and-settings#:~:text=How%20to%20create%20a%20RapidAPI,%2C%20Facebook%2C%20or%20Google%20account.
