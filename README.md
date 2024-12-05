@@ -1,8 +1,10 @@
 # TraderTracker
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
-
 TraderTracker is a basic Angular web application that utilizes Yahoo Financials stock data. The application allows users to quickly view stock information such as Low, High, Open, and Closing prices. It also provides various time metrics to filter on, a search tool for stocks, a chart, and a table for easy consumption of the stock information. 
+
+
+
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.0.
 
 ## Setup 
 
