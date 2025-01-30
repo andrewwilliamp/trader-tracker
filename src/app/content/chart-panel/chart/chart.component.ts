@@ -22,7 +22,7 @@ export class ChartComponent implements OnInit {
   dataSets = new Array();
 
   ngOnInit(): void {
-    // this.updateChartData();
+    this.updateChartData();
   }
 
   updateChartData = () => {
